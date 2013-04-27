@@ -3,8 +3,8 @@
 # Free to use, please refer to the readme.py file for license , info, and the uncompromised enlightenment
 
 #bitNomad_ohm64.py 
-#This is a midi remote script for the Ohm64 by JC Hoot (bitNomad) << need site to reference
-# it is heavily based on the work of Michael Chenetz from max4live.info
+#This is form a midi remote script for the Ohm64 bitNomad @bitnomad  https://github.com/bitnomad
+# via bitNomad : it is heavily based on the work of Michael Chenetz from max4live.info
 # as well as Kevin Ferguson / http://www.ofrecordings.com/
 
 # Import parameter assignments. All of the parameters are set at parameters.py 

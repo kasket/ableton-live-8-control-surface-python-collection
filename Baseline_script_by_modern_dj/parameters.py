@@ -2,7 +2,7 @@
 # DJNSM / @djnsm / djnsm.com -> datamafia.com
 # Free to use, please refer to the readme.py file for license , info, and the uncompromised enlightenment
 
-#NOTE - list and tuple use might be a little loose in the explaination. Please forgive
+#NOTE - list and tuple use might be a little loose in the explanation. Please forgive
 
 # Parameter Options 0-127, no collisions!
 
@@ -13,7 +13,7 @@
 # midi_channel is offset below. Range begins at 1, not 0. Thus assigning 1 here will send 0 to the machine
 midi_channel=1
 # Offsetting compensation. Yeah.
-midi_channel -= 1  # << Do not remove this inless you understand the consequences
+midi_channel -= 1  # << Do not remove this unless you understand the consequences
 
 # ******************************************************************************
 # * MATRIX PARAMETERS
@@ -26,15 +26,14 @@ enable_matrix = 1 # 1 = yes, 0 or not 1 is no
 # does not impact volume
 
 ### NAVIGATION of Control Surface Box ###
-
 ### Box navigation. Operates as pairs up/down and left/right
 
 # Up / Down
 up_button_note_number = 24 # up navigation
 down_button_note_number = 25 # down navigation
 # Left / Right
-left_button_note_number = None # left navigation
-right_button_note_number = None # right navigation
+left_button_note_number = 18 # left navigation
+right_button_note_number = 19 # right navigation
 
 ### CONTROL SURFACE SIZE
 
@@ -45,7 +44,7 @@ box_width = 4 # width of the the "red-box" aka tracks
 box_height = 4 #height of the "red-box" aka scenes
 
 ### Launch button list *** Required *** Python list format
-# Assigned Left to Right, Top to bottom, comma seperated
+# Assigned Left to Right, Top to bottom, comma separated
 launch_button_list = [
     60,61,62,63,
     52,53,54,55,
@@ -91,6 +90,26 @@ tempo_button_up_interval = 1.0
 tempo_button_down_interval = -1
 
 # ******************************************************************************
+# * VOLUME PARAMETERS : CC values for slider. knob, or fader
+# ******************************************************************************
+
+# turns on the various volume stuff
+enable_volume_control = 1
+
+# List of CCs for volume control. Reads left to right. Actually a tuple
+track_volume = [1,2,3,4]
+
+# enable static volume  / offset volume - will not move w/box overriding track_volume
+enable_static_volume = 0 # 1 for yes, 0 for no
+track_volume_static = [1, 2, 3, 4] # the CC's
+### (if used) the number of track_volume_static values must match box_width 
+
+# Applies only to enable_static_volume = 1
+# Track offset 0 has no effect, positive number values will push the audio volume to the right
+# skips MIDI tracks.  
+volume_offset = 4
+
+# ******************************************************************************
 # * Livid Instruments Specific Support
 # ******************************************************************************
 
@@ -107,33 +126,13 @@ LIVID_GREEN = 127
 # ******************************************************************************
 # * Velocity Feedback for RGB type units. Not supported by every device.
 # ******************************************************************************
-# set to true to enable RGB velocity feedback (conitional check)
+
+# set to true to enable RGB velocity feedback (conditional check)
 # Used to turn code block on/off
 use_velocity_for_RGB = 1  # 1 for yes, 0 for no
 
-# Use MIDI range per device (0-127). Consult somethign to tell you what you need to know.
+# Use MIDI range per device (0-127). Consult something to tell you what you need to know.
 # This is the velocity returned to the following clip states
 clip_loaded_stopped = LIVID_BLUE  # clip is in matrix but not playing
 clip_currently_playing = LIVID_GREEN  # currently playing clip in matrix
-clip_triggered_to_play = LIVID_RED  # clip is triggered to play but nto playing yet
-
-# ******************************************************************************
-# * VOLUME PARAMETERS : CC values for slider. knob, or fader
-# ******************************************************************************
-
-# turns on the various volume 
-enable_volume_control = 1
-
-# List of CCs for volume control. Reads left to right. Actually a tuple
-track_volume = [1, 2, 3, 4]
-### (if used) the numner of track_volume values must match box_width 
-
-# ******************************************************************************
-# * NOT IN USE aka PENDING AND SUCH
-# ******************************************************************************
-
-# new addition and need to wire in larger picture and put in logical place
-# Track offset 0 has no effect, positive number values will push the auio volume to the right
-# tied to enable_matrix @todo document and place better
-# FEATURE NOT IMPLEMENTED
-gutter = 1
+clip_triggered_to_play = LIVID_RED  # clip is triggered to play but not playing yet

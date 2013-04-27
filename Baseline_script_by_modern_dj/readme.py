@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Welcome to the legendary readme.py file. We have been waiting for you.
+# Welcome to the legendary readme.py file. We have been waiting for you!
 
 # used in log
 baseline_script_version_major = 1
@@ -9,6 +9,18 @@ baseline_script_version_patch = 0
 baseline_script_version_note = 'Initial Build'
 
 """
+
+-----
+----
+---
+--
+-
+THIS SCRIPT IS FOR ABLETON LIVE 9 ONLY! 
+-
+--
+---
+----
+-----
 
 Table of contents :
 
@@ -26,7 +38,7 @@ i. Preface
 5. Meta
     A. Version Information
     B. Change Log
-    C. Todo List
+    C. To Do List
     D. Road Map
 6. Reference
     A. Ableton Note to MIDI Note Number Value
@@ -47,9 +59,14 @@ This script is for Ableton Live 9 generic control needs.  Features include :
     a. Definable increments (floating and non floating)
     b. Increments for add and remove are not required to match
 7. Support for RGB LED feedback, especially Livid Instruments
-8. All features are "opt in" via the parameters file, detailed here an and on the parameters.py file
+8. Volume support in 2 forms
+    a. "Red Box" control surface volume where the control moves with the navigation
+    b. Static volume control with offsetting. This is for advanced control surface control where volume should not
+    move with the box and often needs to be offset (okay, I really needed this, so you get it too! --M)
 
-More features are coming.
+Of course features are left as "opt in" via the parameters file when possible, detailed here an and on the parameters.py file
+
+More features are coming. Look at the Road Map
 
 Don't be shy, contribute!
 
@@ -125,13 +142,13 @@ good faith is the formal declaration that Ableton in particular needs to find
 a means to balance the business model with the need to provide the tools and
 knowledge to continue to enable or contribute to a musical renaissance that is
 beyond their control or ownership. Should I become martyr (metaphorically) so
-be it. Let an era of change begin a the closing of this paragraph.
+be it. Let an era of change begin at the closing of this paragraph.
 
 --Marc
 
 Managing programmer for this work is Marc / Data Mafia. http://datamafia.com
 
-http://modern.dj and http://moderndotdj.com re authorized to represent this
+http://modern.dj and http://moderndotdj.com re-authorized to represent this
 script in the form of a web app for all to use, free of charge.
 
 Special thanks to my good friend BitNomad (http://github.com/bitnomad) who is
@@ -139,7 +156,7 @@ a great teacher and inspiration to get this script tight. Your code and
 contributions are very welcome, anytime.
 
 The earliest versions of this script came via information and code by
-Michael Chenetz. Permission has been granted to for free distribution from
+Michael Chenetz. Permission has been granted for free distribution from
 Michael Chenetz via http://maxforlive.info
 
 Aumhaa and his website (http://www.aumhaa.com) has helped us kick this script
@@ -190,7 +207,7 @@ This is a baseline midi remote script for any controller not requiring a
 "handshake" or similar serialization. Any controller requiring a proprietary
 data exchange to operate is counterproductive, foolish, and insulting. This
 feature set should be eliminated or documented.  The legacy business practices
-that clearly led to these decisions are here by officially suspect. I declare
+that clearly led to these decisions are hereby officially suspect. I declare
 shenanigan on you!   
 
 Any controller that requires a "handshake" will not work with this script.
@@ -225,19 +242,19 @@ providing back to the community.
 
 5. Readability, documentation, and comments are an ever-present goal
 and desire.  This script should be a resource for control as well
-as learning. Those of us "wrote" this script are not perfect, feedback,
+as learning. Those of us who "wrote" this script are not perfect, so feedback,
 suggestions, rewrites, and help is always welcome.
 
 6. This work was NOT created for profit or personal gain. In fact this
 whole project was originally Marc tying to build the control surface
-stuck in his brain.  The first version only too 2000 hours (thousand).
+stuck in his brain.  The first version only took 2000 hours (thousand).
 Once complete it was clear that more support was needed, especially for
-the non-programmer.  If you could like to donate to the cause, please
-do not let me stop anyone from giving me money. 
+the non-programmer.  If you would like to donate to the cause, please
+do not let me stop you from giving me money. 
 
 The Paypal account to donate for this project is marc@creativeelectronica.com
 
---------------------------------------------------------------------------------
+------------------------------------------------------	--------------------------
 Section 4 : Usage and Manual
 
      A. Rules and Operational Guidelines for Control Surface Scripts with Ableton
@@ -324,9 +341,9 @@ compile the files (if valid) on start up making them available once the program 
 C. About the Compiler
 
 Ableton uses Python (a scripting language) to communicate with the API via the included
-_Framework. When Ableton launches all valid Python files are compiled into .pyc files. Consider .pyc
-files as immutable digital objects resulting from the .py files (instruction sets). These .pyc files are
-static and unchanging for all intensive purposes. These files are faster and part of a clean running
+_Framework. When Ableton launches all valid Python files are compiled into .pyc files. Consider
+.pyc files as immutable digital objects resulting from the .py files (instruction sets). These .pyc files
+are static and unchanging for all intensive purposes. These files are faster and part of a clean running
 system in the context of higher level programming.
 
 D. Why do I only see .pyc files?
@@ -335,7 +352,7 @@ If you only see ".pyc" files and NOT ".py" files don't freak out, yet. These are
 them as generally immutable).  I highly encourage all programmers to include the .py files in
 distributions. If you only see .pyc files one of 2 things probably happened. First, you deleted the .py
 files instead of the .pyc files in building or modifying the control surface script. Look in your trash
-bin for these files. Alternatively, you are working with another persons script and they did not
+bin for these files. Alternatively, you are working with another person's script and they did not
 include the native file. Now you should freak out. These files can be decompiled, but this is very far
 outside the discussion, scope and instructions of this manual.
 
@@ -485,7 +502,7 @@ for various controllers and YOUR new script. Your new script may now have a name
 "new_name_instance" where directly inside this folder is a number of Python files ending with ".py"
 and possibly ".pyc". For more information on the ".pyc" files please see the section titled "About the
 Compiler". All of the files inside the new_name_instance folder should be on the same level meaning
-there is no files nested in aditional folders. This may change as the script grows or others add new
+there is no files nested in additional folders. This may change as the script grows or others add new
 functionality. There should be a number of other files, but we specifically should see files named
 "__init__.py" and "new_name_instance.py" (or the name selected other than new_name_instance).
 
@@ -497,7 +514,7 @@ Section 5 : Meta
 
     A. Version Information
     B. Change Log
-    C. Todo List
+    C. To Do List
     D. Road Map
 --------------------------------------------------------------------------------
 
@@ -512,19 +529,23 @@ Version 1.0.0 :
 
 Initial release of the Baseline script for Ableton Live9
 
-C. Todo List
+C. To Do List
 
 Add sends.
 Decide if sends should be unlimited or not.
 Add track enable control.
 Add device control and navigation.
-Figure out wny gutter stopped working
 Add proprietary handshakes (APC, MPD, Launchpad)
+Livid Base via channel change using "Program Change" method is not refreshing correct.
 
 D. Road Map
 
-Build web app in the most basic sense. Once the web app is built continue adding features to the script.
-Test thoroughly before adding to the web app. Release the web app open source when appropriate.
+Build web app in the most basic sense.
+Once the web app is built continue adding features to the script.
+Test more before adding to the web app.
+Release the web app open source when appropriate.
+
+Please contact us regarding reatures andthe rooadmap.
 
 -----------------------------------------------------------
 Section 6 : Reference Information

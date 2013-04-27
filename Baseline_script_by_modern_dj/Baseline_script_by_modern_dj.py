@@ -3,7 +3,7 @@
 # Free to use, please refer to the readme.py file for license , info, and the uncompromised enlightenment
 
 # live9 / Py support. Needs to be up front
-''' killed for 8
+''' live 9 only
 from __future__ import with_statement
 '''
 # we assign all parameters for all files / modeuls on the Python parameters.py file
@@ -20,24 +20,28 @@ from _Framework.ControlElement import ControlElement # Element/obj for control?
 from _Framework.ControlSurface import ControlSurface # obj fed to __init__
 from _Framework.ControlSurfaceComponent import ControlSurfaceComponent 
 from _Framework.InputControlElement import * # take contorl and ...? Needs *?
-''' killed for 8
+''' live 9 only
 from _Framework.SceneComponent import SceneComponent # New in Live9
 '''
 from _Framework.SessionComponent import SessionComponent # Session obj
-# moved to conditional import
-#from _Framework.TransportComponent import TransportComponent # tempo+?
 
 #required as we are subclassing the Sesion Component
 from CustomSessionComponent import CustomSessionComponent
+
 # import what is required  for tempo control
 if enable_tempo_control == 1:
-    from tempo_control import CustomTransportComponent # todo change this name?
+    from tempo_control import CustomTransportComponent # I subclass there for I am
     from _Framework.TransportComponent import TransportComponent # tempo+?
-# import what is required for volume control
+    
+# import what is required for  standard volume control
 if enable_volume_control == 1:
     from _Framework.SliderElement import SliderElement #  required for knob/slider element
     # Required, subclass of the Live Mixer
     from CustomMixerComponent import CustomMixerComponent 
+
+# static volume / offset volume
+if enable_static_volume == 1:
+    from _Framework.MixerComponent import MixerComponent
 
 # Main class
 class Baseline_script_by_modern_dj(ControlSurface):
@@ -46,9 +50,8 @@ class Baseline_script_by_modern_dj(ControlSurface):
     
     # bootstrap method
     def __init__(self, c_instance):
-        
         ControlSurface.__init__(self, c_instance) # bootstrap into the API/_Framework
-        ''' killed for 8
+        ''' live 9 onlye
         with self.component_guard(): # live9 / new requirement
         '''
         self.log_message(" - ")
@@ -61,7 +64,7 @@ class Baseline_script_by_modern_dj(ControlSurface):
         # Look for matrix option
         if enable_matrix == 1: # yes, matrix aka "red box"
             self.log_message("[matrix enabled]")
-            self.gutter = gutter # see param info / offset for left track we will call "gutter"
+            self.volume_offset = volume_offset # see param info / offset for volume
             self.box_width = box_width # track width 
             self.box_height = box_height # track height aka scene count
             self.session = None # local session object
@@ -70,9 +73,15 @@ class Baseline_script_by_modern_dj(ControlSurface):
             if enable_volume_control == 1:
                 self.log_message("[volume control enabled]")
                 self.volume_control = None # param container inside the obj
-                self.track_volume = track_volume # localize tuple of CCs for volume control
                 self.mixer = None # holds the obj mixer object
-                self._setup_mixer_control() # fire off the mixer obj
+                # should volume be static or not?
+                if enable_static_volume == 1 :
+                    self.track_volume_static = track_volume_static # localize tuple of CCs for volume control
+                    self.mixer_custom = None
+                    self.custom_offset_mixer() 
+                else :
+                    self .track_volume = track_volume # localize tuple of CCs for volume control
+                    self._setup_mixer_control()
                 self.session.set_mixer(self.mixer) # for the red box to move left/right w/session
             else:
                 self.log_message("[volume control not enabled")
@@ -84,14 +93,16 @@ class Baseline_script_by_modern_dj(ControlSurface):
             self._setup_transport_control()
         else:
             self.log_message("[tempo not enabled]")
-        # turn on "red box" again --  drops mic, walks off stage
-        self._suppress_session_highlight = False 
+            # turn on "red box" again --  drops mic, walks off stage
+            ''' live 9 only
+            self._suppress_session_highlight = False
+            '''
 
-    ## tempo via  @bitNomad  / http://gothub.com/bitnomad 
+    ## tempo via  @bitNomad  / http://github.com/bitnomad 
     # @todo : Move this off and pass the object along newer subclassing patterns
     def _setup_transport_control(self):
         transport = CustomTransportComponent() #Instantiate a Transport Component
-        transport.set_tempo_bumpers(transport.button(tempo_button_up), transport.button(tempo_button_down)) ## [[[todo]]] move to file def of config## end calvin    
+        transport.set_tempo_bumpers(transport.button(tempo_button_up), transport.button(tempo_button_down)) # yells "DO IT!!" at tempo code
 
     # pass session component through a bunch of subclassing
     def _setup_session_control(self):
@@ -110,7 +121,7 @@ class Baseline_script_by_modern_dj(ControlSurface):
             left_button.name = 'Bank_Select_Left_Button' #sure, why not
             self.session.set_track_bank_buttons(right_button, left_button)
         self.session.name = 'Session_Control' #sure, why not
-        matrix = ButtonMatrixElement() # @todo subclass this, follow the pattern...
+        matrix = ButtonMatrixElement() # @todo subclass this via established new patterns
         matrix.name = 'Button_Matrix' #sure, why not
         # I loop a little different. The goal is readbility, flexibility, and the web app...incase you did not notice yet
         if len(scene_launch_notes) > 0 and len(scene_launch_notes) == self.box_height: # logic check have launch notes and scene = box height
@@ -164,7 +175,7 @@ class Baseline_script_by_modern_dj(ControlSurface):
                 matrix.add_row(tuple(button_row)) # close out the matrix build. @todo - possible subclass here?
         else : # log message
             self.log_message("..::|| Number of notes defined does not match box height and width Modern.DJ ||::..")
-        '''killed for  8
+        ''' live 9 only
         self.set_highlighting_session_component(self.session) # new for live9 -- this is for the box. via aumhaa/bitnomad
         '''
         return None
@@ -176,31 +187,38 @@ class Baseline_script_by_modern_dj(ControlSurface):
             return SliderElement(MIDI_CC_TYPE, channel, value) # assign data to slider object
         else:
             return None
+
+    # Static volume control offset via volume_offset param
+    def custom_offset_mixer(self):
+        # skipped the subclass
+        # for some reason this pattern will allow the offset and static volume control.
+        # looking for explaination and insight on this...Bueller?
+        self.mixer_custom = MixerComponent(self.box_width) # get a local mixer object ready
+        self.mixer_custom.name = 'Mixer Custom' # name
+        self.mixer_custom.set_track_offset(self.volume_offset)  # the offset
+        # compare width with track vol count to qualify -- put somewhere else 
+        for index in range(self.box_width): # @marwei must kill this style and count
+            self.mixer_custom.channel_strip(index).set_volume_control(self.slider(midi_channel, self.track_volume_static[index]))
     
-    # volume control specific
+    # volume control specific, will move with red box
     # Set up mixer locally / object
     def _setup_mixer_control(self):
-        self.mixer = CustomMixerComponent(self.box_width, self)  # essentially grab the super class
-        self.mixer.name = 'Mixer' # sure, why not
-        
-        #  FEATURE NOT IMPLEMENTED!
-        self.mixer.set_track_offset(self.gutter)  # gutter, see readme.py or params
-        
-        # check box width and tuple size. Forward compatibility
-        if len(self.track_volume) == self.box_width:  # error checking per established app standard
-            # loop on the CCs and create strip/volume control
-            for index in range(self.box_width): #  @todo must kill this style and count???
-                self.mixer.channel_strip(index).set_volume_control(self.slider(midi_channel, self.track_volume[index]))
-        else: # bad math, error messAge, fail
-            self.log_message(time.strftime("%d.%m.%Y %H:%M:%S", time.localtime()) + "..::|| volume param bad math message. box_width != len(track_volume) ||::..")
+       self.mixer = CustomMixerComponent(self.box_width, self)  # essentially grab the super class
+       self.mixer.name = 'Mixer' # sure, why not
+       self.mixer.set_track_offset(0)  # not sure if needed, seems not to hurt.
+       # check box width and tuple size. Forward compatibility
+       if len(self.track_volume) == self.box_width:  # error checking per established app standard
+           # loop on the CCs and create strip/volume control
+           for index in range(self.box_width): #  @todo kill this and count in reverse via decrement (performance)
+               self.mixer.channel_strip(index).set_volume_control(self.slider(midi_channel, self.track_volume[index]))
+       else: # bad math, error messAge, fail
+           self.log_message(time.strftime("%d.%m.%Y %H:%M:%S", time.localtime()) + "..::|| volume param bad math message. box_width != len(track_volume) ||::..")
     
     def disconnect(self):
         self.log_message(time.strftime("%d.%m.%Y %H:%M:%S", time.localtime()) + "..::|| Modern.DJ LIVE9 baseline MRS  closed ||::..")
         self.log_message("**************************************************")
         self.log_message(" - ")
         ControlSurface.disconnect(self)
-        #if self.mixer  # weird right?
-            
         return None
     
     def version_information(self):
@@ -211,7 +229,7 @@ class Baseline_script_by_modern_dj(ControlSurface):
         self.log_message('Modern.Dj Baseline Script Release Note : '+baseline_script_version_note)
  
 '''
-# INT DEBUG COPY / PASTE
+# integer debug copy+paste
 someInt = ' %i ' % SOME_NUM
 self.log_message(" Seacrh4This "+someInt)
 '''
